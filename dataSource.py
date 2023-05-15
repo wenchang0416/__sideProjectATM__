@@ -73,28 +73,8 @@ class filterAtmListFromInquiry():
         except:
             print("經緯度資料爬蟲失敗:")
             return
-        '''
-        # 替代方法-2: 經緯度資料爬蟲失敗, 用以下方法
-        #### 新北市板橋區民生路二段232號-- longitude:121.46655211500601, latitude: 25.022648983
-        self.longitude = 121.46655211500601
-        self.latitude = 25.022648983
         
-        #### 台北市大安區信義路三段153號-- longitude:121.54039791500624, latitude: 25.03380218
-        self.longitude = 121.54039791500624
-        self.latitude = 25.03380218 
         
-        #### 嘉義市西區友愛路288號7樓之3-- longitude:120.43168811497637, latitude: 23.484060684
-        self.longitude = 120.43168811497637
-        self.latitude = 23.484060684   
-        
-        #### 台北市中山區中山北路二段113號-- longitude:121.52101491500682, latitude: 25.060587683
-        self.longitude = 121.52101491500682 
-        self.latitude = 25.060587683
-        
-        #### 高雄市楠梓區金富街1號-- longitude:120.31701181496221, latitude: 22.723982485
-        self.longitude = 120.31701181496221
-        self.latitude = 22.723982485     
-        '''
     def getDistanceBetweenPoints(self):
         # groupby data
         atmAddressData = self.atmData[['bankcode','branchname','type','placetype','place','county','district','address','wheelchair_envir','voice_evnir','memo','longitude','latitude']].value_counts().reset_index()

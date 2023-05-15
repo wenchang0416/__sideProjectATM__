@@ -41,17 +41,6 @@ class Window(tk.Tk):
         self.districtComBox.grid(column=1, row=1, padx=(0,10), pady=5, sticky=tk.W, columnspan=2)        
         self.districtComBox['values'] = ('請選擇---')
         self.districtComBox.current(0)
-        '''
-        self.countySelectValue = self.countyComboxValues[2]                           
-        self.districtUnderCounty = self.atmData[self.atmData['county'] == self.countySelectValue]
-        districtList = self.districtUnderCounty['district'].unique().tolist()          #unique->numpy.ndarray tolist->list  
-        districtList = sorted(districtList)
-        districtList.insert(0,'請選擇---')
-        self.districtComboxValues = tuple(districtList)
-        self.districtComBox['values'] = self.districtComboxValues
-        self.districtComBox.current(0)
-        self.districtComBox.bind('<<ComboboxSelected>>',self.districtChangeEventCombox)   
-        ''' 
 
         ## row=2:地址----
         ttk.Label(self.filterTopLeftFrame, text = "請輸入-地址 :", font = ("Arial", 10)).grid(column=0, row=2, padx=10, pady=5, sticky=tk.W)  
@@ -303,8 +292,7 @@ class Window(tk.Tk):
                              tags=self.filterAtmList.index[i]
                             )  
             
-        # display to TkinterMapView
-        # references: https://github.com/TomSchimansky/TkinterMapView#create-position-markers        
+        # display to TkinterMapView 
         self.markerNow.delete()
         self.markerNow = self.resultTkinterMapView.set_position(self.latitude, self.longitude, text_color = 'darkRed', marker=True)
         self.markerNow.set_text(self.addressSelectValue)
@@ -312,7 +300,6 @@ class Window(tk.Tk):
 
     def treeSelected(self,event):       
         selectedTree = event.widget  
-        # if len(selectedTree.selection()) ==0: return     #正常selectedTree出現tuple('I001',),但有時會0
 
         # get Longitude & Latitude of selected address
         itemTage = selectedTree.selection()[0]            #selectedTree.selection()=('I005',)
@@ -323,7 +310,6 @@ class Window(tk.Tk):
         selectedPlaceLatitude = selectedData[14]     
 
         # 於地圖上標記地址----------------------------------
-        # reference : https://github.com/TomSchimansky/TkinterMapView   
         self.markerATM = self.resultTkinterMapView.set_position(selectedPlaceLatitude, selectedPlaceLongitude, text_color = 'darkBlue', marker=True)   
         self.markerATM.set_text(selectedData[7])
   
@@ -335,10 +321,10 @@ class Window(tk.Tk):
         
 
 def main(): 
-    '''
+    
     # get atmData from internet--------------------   
     dataSource.DownLoadAtmData()    
-    '''
+    
     # build window()-------------------------------
     atmData = pd.read_csv('atmData.csv')
 
