@@ -104,7 +104,7 @@ class Window(tk.Tk):
         self.resultTkinterMapView.pack(side=tk.LEFT,padx=10, pady=10)
 
         # 預設職能上課地點 :台北市大安區信義路三段153號
-        self.markerNow = self.resultTkinterMapView.set_position(25.03380218, 121.54039791500624, text_color = 'darkRed', marker=True)        
+        self.markerNow = self.resultTkinterMapView.set_position(25.03380219999999, 121.5425866, text_color = 'darkRed', marker=True)        
         self.resultTkinterMapView.set_zoom(20) 
         #self.markerNow.set_text('職能管理發展學院-大安區')     
 
@@ -212,7 +212,7 @@ class Window(tk.Tk):
         # clear resultMapTopRightFrame-------------------------
         self.resultTkinterMapView.delete_all_marker()
         # 預設職能上課地點 :台北市大安區信義路三段153號
-        self.markerNow = self.resultTkinterMapView.set_position(25.03380218, 121.54039791500624, text_color = 'darkRed', marker=True)
+        self.markerNow = self.resultTkinterMapView.set_position(25.03380219999999, 121.5425866, text_color = 'darkRed', marker=True)
         #self.markerNow.set_text('職能管理發展學院-大安區')
 
 
@@ -321,16 +321,16 @@ class Window(tk.Tk):
         
 
 def main(): 
-    
+    '''
     # get atmData from internet--------------------   
     dataSource.DownLoadAtmData()    
-    
+    '''
     # build window()-------------------------------
     atmData = pd.read_csv('atmData.csv')
 
     window = Window(atmData)
     window.title("ATM裝設地點-個人/企業版: ATM地點查詢")    
-    window.geometry("1270x680")
+    window.geometry("1270x660")
     window.mainloop()   
     
 
