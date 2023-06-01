@@ -85,13 +85,7 @@ class filterAtmListFromInquiry():
             if initial_pos > 0:
                 data = data[0:initial_pos]
             print(data)
-            '''            
-            if data[-1]==",":  
-                data=data[0:len(data)-1]
-            if data[-1]=="]":
-                data=data[0:len(data)-1]
-            print(data)
-            '''
+            
             line = tuple(data.split(','))        # ex:3613.182629200904,121.52635811500751,25.095674883
             self.longitude = float(line[1])      # longitude:經度,X軸
             self.latitude = float(line[2])       # latitude:緯度,Y軸
