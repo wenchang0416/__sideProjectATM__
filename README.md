@@ -4,7 +4,7 @@
 
 ![產生圖片](./img/ATM_MachineLearning.PNG)
 
-## ATM設點查詢
+## ATM裝設地點查詢
 
 ![產生圖片](./img/ATM.PNG)
 
