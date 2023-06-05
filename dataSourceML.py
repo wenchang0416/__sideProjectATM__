@@ -271,18 +271,4 @@ class atmClusterCntTypeDBSCAN():
         
 
         return clusterCntTypeDBSCAN
-    
-           
         
-        
-    
-
-    '''
-    Try using .loc[row_indexer,col_indexer] = value instead
-    See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-    tmpDBSCAN['dbscan'] = dbs.labels_
-    '''
-    #group1 = atmMLData.groupby(['bankcode','bankbrifname'])[['units']].count()    
-    #group2 = atmMLData.groupby(['bankcode','bankbrifname']).agg({'units': ['count','sum']})
-    #group3 = atmMLData.groupby(['bankbrifname','county']).agg(unitsCount=('units', 'count'),unitsSum=('units', 'sum'))
-    #group4 = group3.groupby(['bankbrifname'])[['unitsCount']].count()
