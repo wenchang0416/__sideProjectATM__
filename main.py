@@ -111,7 +111,7 @@ class Window(tk.Tk):
 
         # ATM地點 : 明細結果--------------------------------------------
         self.resultDetailBottomFrame = ttk.LabelFrame(self,text='ATM地點 : 明細清單')     #self.addressSelectValue+self.districtSelectValue
-        self.resultDetailBottomFrame.pack(side=tk.LEFT,padx=(20,10),pady=(0,10))
+        self.resultDetailBottomFrame.pack(side=tk.LEFT,padx=(20,10),pady=(0,8))
         # build ttk.Treeview
         columns = ('#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8', '#9', '#10', '#11', '#12', '#13')
         self.tree = ttk.Treeview(self.resultDetailBottomFrame, columns=columns, show='headings')
@@ -321,10 +321,10 @@ class Window(tk.Tk):
         
 
 def main(): 
-    '''
+    
     # get atmData from internet--------------------   
     dataSource.DownLoadAtmData()    
-    '''
+    
     # build window()-------------------------------
     atmData = pd.read_csv('atmData.csv')
 

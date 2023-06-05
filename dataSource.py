@@ -73,7 +73,7 @@ class filterAtmListFromInquiry():
                      
             # 方法2:
             # 台北市士林區中正路115號-- longitude:121.5285468, latitude: 25.095674899999995  
-            # 台北市大安區信義路三段153號-- longitude:121.5425866, latitude: 25.03380219999999                             
+            # 台北市大安區信義路三段153號-- longitude:121.5425866, latitude: 25.033802199999997                            
             url = "https://www.google.com.tw/maps/place/" + self.Address
             html = requests.get(url)
             soup = bs4.BeautifulSoup(html.text, "html.parser")
