@@ -153,38 +153,38 @@ class atmSklearnCluster():
         self.minSampleDbscan = minSampleDbscan     
        
         # calculate radiusDBSCAN
-        self.radiusStdDBSCAN = self.atmMLData.groupby(['county'], as_index=False).agg({'longitude': ['count','mean','std'],'latitude': ['mean','std']})          
-        self.radiusStdDBSCAN.columns = ['county', 'units', 'lngMean', 'lngStd', 'latMean', 'latStd']
-        self.radiusStdDBSCAN['stdType'] = self.stdType
+        self.clusterRadiusDBSCAN = self.atmMLData.groupby(['county'], as_index=False).agg({'longitude': ['count','mean','std'],'latitude': ['mean','std']})          
+        self.clusterRadiusDBSCAN.columns = ['county', 'units', 'lngMean', 'lngStd', 'latMean', 'latStd']
+        self.clusterRadiusDBSCAN['stdType'] = self.stdType
         if self.stdType == 'minStd':
-            self.radiusStdDBSCAN['selectedStd'] = self.radiusStdDBSCAN[['lngStd','latStd']].min(axis=1)
+            self.clusterRadiusDBSCAN['selectedStd'] = self.clusterRadiusDBSCAN[['lngStd','latStd']].min(axis=1)
         else:
-            self.radiusStdDBSCAN['selectedStd'] = self.radiusStdDBSCAN[['lngStd','latStd']].max(axis=1)
-        self.radiusStdDBSCAN['q25Std'] = (self.radiusStdDBSCAN['selectedStd']).quantile(0.25)  
-        self.radiusStdDBSCAN['stdRatio'] = self.stdRatio
+            self.clusterRadiusDBSCAN['selectedStd'] = self.clusterRadiusDBSCAN[['lngStd','latStd']].max(axis=1)
+        self.clusterRadiusDBSCAN['q25Std'] = (self.clusterRadiusDBSCAN['selectedStd']).quantile(0.25)  
+        self.clusterRadiusDBSCAN['stdRatio'] = self.stdRatio
 
         if self.stdQ25 == 'Y':
-            for couVar in range(self.radiusStdDBSCAN['county'].size): 
-                if self.radiusStdDBSCAN.loc[couVar,'selectedStd'] < self.radiusStdDBSCAN.loc[couVar,'q25Std']:
-                    self.radiusStdDBSCAN.loc[couVar,'selectedStd'] = self.radiusStdDBSCAN.loc[couVar,'q25Std']
-                    self.radiusStdDBSCAN.loc[couVar,'stdType'] = 'q25Std'
+            for couVar in range(self.clusterRadiusDBSCAN['county'].size): 
+                if self.clusterRadiusDBSCAN.loc[couVar,'selectedStd'] < self.clusterRadiusDBSCAN.loc[couVar,'q25Std']:
+                    self.clusterRadiusDBSCAN.loc[couVar,'selectedStd'] = self.clusterRadiusDBSCAN.loc[couVar,'q25Std']
+                    self.clusterRadiusDBSCAN.loc[couVar,'stdType'] = 'q25Std'
 
 
-        self.radiusStdDBSCAN['radiusDbscan'] = self.radiusStdDBSCAN['selectedStd'] * self.radiusStdDBSCAN['stdRatio']
-        #print(self.radiusStdDBSCAN)
+        self.clusterRadiusDBSCAN['radiusDbscan'] = self.clusterRadiusDBSCAN['selectedStd'] * self.clusterRadiusDBSCAN['stdRatio']
+        #print(self.clusterRadiusDBSCAN)
         # extra adjust radius when stdQ25 than Q3-Q1 or upper than Q3-Q1        
        
-        self.radiusStdDBSCAN = self.radiusStdDBSCAN.sort_values(by = 'units', ascending=False)
-        self.radiusStdDBSCAN.reset_index(inplace=True)
-        self.radiusStdDBSCAN = self.radiusStdDBSCAN.drop(columns=['index'])
+        self.clusterRadiusDBSCAN = self.clusterRadiusDBSCAN.sort_values(by = 'units', ascending=False)
+        self.clusterRadiusDBSCAN.reset_index(inplace=True)
+        self.clusterRadiusDBSCAN = self.clusterRadiusDBSCAN.drop(columns=['index'])
         
 
     
     def atmClusterDBSCAN(self):   
-        for i in range(self.radiusStdDBSCAN['county'].size): 
+        for i in range(self.clusterRadiusDBSCAN['county'].size): 
             # prepare parameters of DBSCAN: eps
-            tmpDBSCAN = self.atmMLData[self.atmMLData['county']==self.radiusStdDBSCAN.iloc[i,0]]            
-            radiusDbscan = self.radiusStdDBSCAN['radiusDbscan'][i]
+            tmpDBSCAN = self.atmMLData[self.atmMLData['county']==self.clusterRadiusDBSCAN.iloc[i,0]]            
+            radiusDbscan = self.clusterRadiusDBSCAN['radiusDbscan'][i]
 
             # process Z分數標準化 before DBSCAN
             zStd = StandardScaler()
@@ -196,7 +196,7 @@ class atmSklearnCluster():
             dbscan = DBSCAN( eps = radiusDbscan, min_samples = self.minSampleDbscan)
             dbs = dbscan.fit(tmpDBSCAN[['longitude','latitude']])                        
             tmpDBSCAN['dbscan組'] = dbs.labels_
-            tmpDBSCAN['縣市據點數'] = self.radiusStdDBSCAN.iloc[i,1]
+            tmpDBSCAN['縣市據點數'] = self.clusterRadiusDBSCAN.iloc[i,1]
 
             # accumulate result of DBSCAN
             tmpDBSCAN.sort_values(['county','dbscan組'], ascending=[True, False], inplace=True) 
@@ -222,12 +222,12 @@ class atmSklearnCluster():
         current = os.path.abspath("./")        
         clusterDBSCAN_path      = os.path.join(current,'clusterDBSCAN.csv') 
         clusterTeamDBSCAN_path  = os.path.join(current,'clusterTeamDBSCAN.csv') 
-        radiusStdDBSCAN_path    = os.path.join(current,'radiusStdDBSCAN.csv')  
+        clusterRadiusDBSCAN_path    = os.path.join(current,'clusterRadiusDBSCAN.csv')  
         clusterDBSCAN.to_csv(clusterDBSCAN_path, encoding='utf_8_sig') 
         self.clusterTeamDBSCAN.to_csv(clusterTeamDBSCAN_path, encoding='utf_8_sig') 
-        self.radiusStdDBSCAN.to_csv(radiusStdDBSCAN_path, encoding='utf_8_sig') 
+        self.clusterRadiusDBSCAN.to_csv(clusterRadiusDBSCAN_path, encoding='utf_8_sig') 
 
-        return (self.clusterTeamDBSCAN, self.radiusStdDBSCAN)
+        return (self.clusterTeamDBSCAN, self.clusterRadiusDBSCAN)
     
     
 class atmClusterCntTypeDBSCAN():  
@@ -271,4 +271,3 @@ class atmClusterCntTypeDBSCAN():
         
 
         return clusterCntTypeDBSCAN
-        

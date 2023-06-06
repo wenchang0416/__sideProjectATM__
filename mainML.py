@@ -434,11 +434,11 @@ class Window(tk.Tk):
         self.stdQ25Value = self.stdQ25Var.get().upper()
         #print(self.stdTypeValue, self.stdRatioValue, self.stdQ25Value)
         atmClusterData = dataSourceML.atmSklearnCluster(self.atmMLData, stdType = self.stdTypeValue, stdRatio = self.stdRatioValue, stdQ25 = self.stdQ25Value)
-        self.clusterTeamDBSCAN,self.radiusStdDBSCAN = atmClusterData.atmClusterDBSCAN()    
+        self.clusterTeamDBSCAN,self.clusterRadiusDBSCAN = atmClusterData.atmClusterDBSCAN()    
         
     
         # prcessing heatmap: countyOfBankRw1Cn3GraphFrame---------------------------         
-        ###clusterTeamDBSCAN, radiusStdDBSCAN
+        ###clusterTeamDBSCAN, clusterRadiusDBSCAN
         corrBankDBSCAN = self.clusterTeamDBSCAN[ (self.clusterTeamDBSCAN['dbscan組'] != -1) & (self.clusterTeamDBSCAN['縣市'] == self.selectedCounty ) ]        
         corrBankDBSCAN = corrBankDBSCAN[['一銀','中信','元大','兆豐','台新','合庫','國世','土銀','彰銀','永豐','玉山','臺企','臺銀','華銀','郵局']]
         ### plot a graph in a labelframe using tkinter and matplotlib
@@ -464,7 +464,7 @@ class Window(tk.Tk):
         
         # Rw0:全台---------------------------------------------------------------------------------         
         # prcessing heatmap: BankRw0Cn3GraphFrame-----------------------------------  
-        # clusterTeamDBSCAN, radiusStdDBSCAN
+        # clusterTeamDBSCAN, clusterRadiusDBSCAN
         corrBankDBSCAN = self.clusterTeamDBSCAN[ self.clusterTeamDBSCAN['dbscan組'] != -1 ]        
         corrBankDBSCAN = corrBankDBSCAN[['一銀','中信','元大','兆豐','台新','合庫','國世','土銀','彰銀','永豐','玉山','臺企','臺銀','華銀','郵局']]
         ### plot a graph in a labelframe using tkinter and matplotlib
@@ -655,7 +655,8 @@ class Window(tk.Tk):
 def main():
     
     # get atmData from internet----------------------   
-    dataSource.DownLoadAtmData()        
+    dataSource.DownLoadAtmData()    
+    
     
     # preprocess data--------------------------------
     atmData = pd.read_csv('atmData.csv')
